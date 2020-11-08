@@ -1,0 +1,299 @@
+
+TWI.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  0000024e  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000001fa  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  0000024e  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000280  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000058  00000000  00000000  000002c0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   00000cf1  00000000  00000000  00000318  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000b0b  00000000  00000000  00001009  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000411  00000000  00000000  00001b14  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000098  00000000  00000000  00001f28  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    00000577  00000000  00000000  00001fc0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000001e9  00000000  00000000  00002537  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000038  00000000  00000000  00002720  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 66 00 	jmp	0xcc	; 0xcc <__ctors_end>
+   4:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+   8:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+   c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  10:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  14:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  18:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  1c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  20:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  24:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  28:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  2c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  30:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  34:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  38:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  3c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  40:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  44:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  48:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  4c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  50:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  54:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  58:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  5c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  60:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  64:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  68:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  6c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  70:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  74:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  78:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  7c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  80:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  84:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  88:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  8c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  90:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  94:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  98:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  9c:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  a0:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  a4:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  a8:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  ac:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  b0:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  b4:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  b8:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  bc:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  c0:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  c4:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+  c8:	0c 94 83 00 	jmp	0x106	; 0x106 <__bad_interrupt>
+
+000000cc <__ctors_end>:
+  cc:	11 24       	eor	r1, r1
+  ce:	1f be       	out	0x3f, r1	; 63
+  d0:	cf ef       	ldi	r28, 0xFF	; 255
+  d2:	d8 e0       	ldi	r29, 0x08	; 8
+  d4:	de bf       	out	0x3e, r29	; 62
+  d6:	cd bf       	out	0x3d, r28	; 61
+
+000000d8 <__do_copy_data>:
+  d8:	11 e0       	ldi	r17, 0x01	; 1
+  da:	a0 e0       	ldi	r26, 0x00	; 0
+  dc:	b1 e0       	ldi	r27, 0x01	; 1
+  de:	ea ef       	ldi	r30, 0xFA	; 250
+  e0:	f1 e0       	ldi	r31, 0x01	; 1
+  e2:	02 c0       	rjmp	.+4      	; 0xe8 <__do_copy_data+0x10>
+  e4:	05 90       	lpm	r0, Z+
+  e6:	0d 92       	st	X+, r0
+  e8:	a0 30       	cpi	r26, 0x00	; 0
+  ea:	b1 07       	cpc	r27, r17
+  ec:	d9 f7       	brne	.-10     	; 0xe4 <__do_copy_data+0xc>
+
+000000ee <__do_clear_bss>:
+  ee:	21 e0       	ldi	r18, 0x01	; 1
+  f0:	a0 e0       	ldi	r26, 0x00	; 0
+  f2:	b1 e0       	ldi	r27, 0x01	; 1
+  f4:	01 c0       	rjmp	.+2      	; 0xf8 <.do_clear_bss_start>
+
+000000f6 <.do_clear_bss_loop>:
+  f6:	1d 92       	st	X+, r1
+
+000000f8 <.do_clear_bss_start>:
+  f8:	a0 30       	cpi	r26, 0x00	; 0
+  fa:	b2 07       	cpc	r27, r18
+  fc:	e1 f7       	brne	.-8      	; 0xf6 <.do_clear_bss_loop>
+  fe:	0e 94 85 00 	call	0x10a	; 0x10a <main>
+ 102:	0c 94 fb 00 	jmp	0x1f6	; 0x1f6 <_exit>
+
+00000106 <__bad_interrupt>:
+ 106:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000010a <main>:
+
+
+int main(void)
+{
+    /* Replace with your application code */
+	TWI_Master_Init(&TWI0, TWI_FREQ);
+ 10a:	40 e0       	ldi	r20, 0x00	; 0
+ 10c:	54 e2       	ldi	r21, 0x24	; 36
+ 10e:	64 ef       	ldi	r22, 0xF4	; 244
+ 110:	70 e0       	ldi	r23, 0x00	; 0
+ 112:	88 eb       	ldi	r24, 0xB8	; 184
+ 114:	90 e0       	ldi	r25, 0x00	; 0
+ 116:	0e 94 8e 00 	call	0x11c	; 0x11c <TWI_Master_Init>
+ 11a:	ff cf       	rjmp	.-2      	; 0x11a <main+0x10>
+
+0000011c <TWI_Master_Init>:
+	}
+}
+
+//set twi clock frequency,
+uint8_t TWI_Master_Init(uint8_t volatile *TWI_addr, uint32_t I2C_freq)
+{
+ 11c:	cf 92       	push	r12
+ 11e:	df 92       	push	r13
+ 120:	ef 92       	push	r14
+ 122:	ff 92       	push	r15
+ 124:	cf 93       	push	r28
+ 126:	df 93       	push	r29
+ 128:	ec 01       	movw	r28, r24
+ 12a:	9a 01       	movw	r18, r20
+ 12c:	ab 01       	movw	r20, r22
+	uint8_t prescale_value = (((F_CPU/F_DIV)/(uint32_t)(I2C_freq))-16UL)/(2UL*255);
+ 12e:	60 e0       	ldi	r22, 0x00	; 0
+ 130:	74 e2       	ldi	r23, 0x24	; 36
+ 132:	84 ef       	ldi	r24, 0xF4	; 244
+ 134:	90 e0       	ldi	r25, 0x00	; 0
+ 136:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <__udivmodsi4>
+ 13a:	69 01       	movw	r12, r18
+ 13c:	7a 01       	movw	r14, r20
+ 13e:	80 e1       	ldi	r24, 0x10	; 16
+ 140:	c8 1a       	sub	r12, r24
+ 142:	d1 08       	sbc	r13, r1
+ 144:	e1 08       	sbc	r14, r1
+ 146:	f1 08       	sbc	r15, r1
+ 148:	c7 01       	movw	r24, r14
+ 14a:	b6 01       	movw	r22, r12
+ 14c:	2e ef       	ldi	r18, 0xFE	; 254
+ 14e:	31 e0       	ldi	r19, 0x01	; 1
+ 150:	40 e0       	ldi	r20, 0x00	; 0
+ 152:	50 e0       	ldi	r21, 0x00	; 0
+ 154:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <__udivmodsi4>
+	
+	// setting the status register
+	if(prescale_value<1)
+ 158:	21 11       	cpse	r18, r1
+ 15a:	02 c0       	rjmp	.+4      	; 0x160 <TWI_Master_Init+0x44>
+	{
+		*(TWI_addr + TWSR) = PRESCALE_1;
+ 15c:	19 82       	std	Y+1, r1	; 0x01
+ 15e:	0e c0       	rjmp	.+28     	; 0x17c <TWI_Master_Init+0x60>
+	}
+	
+	else if(prescale_value<4)
+ 160:	24 30       	cpi	r18, 0x04	; 4
+ 162:	18 f4       	brcc	.+6      	; 0x16a <TWI_Master_Init+0x4e>
+	{
+		*(TWI_addr + TWSR) = PRESCALE_4;
+ 164:	81 e0       	ldi	r24, 0x01	; 1
+ 166:	89 83       	std	Y+1, r24	; 0x01
+ 168:	09 c0       	rjmp	.+18     	; 0x17c <TWI_Master_Init+0x60>
+	}
+	
+	else if(prescale_value<16)
+ 16a:	20 31       	cpi	r18, 0x10	; 16
+ 16c:	18 f4       	brcc	.+6      	; 0x174 <TWI_Master_Init+0x58>
+	{
+		*(TWI_addr + TWSR) = PRESCALE_16;
+ 16e:	82 e0       	ldi	r24, 0x02	; 2
+ 170:	89 83       	std	Y+1, r24	; 0x01
+ 172:	04 c0       	rjmp	.+8      	; 0x17c <TWI_Master_Init+0x60>
+	}
+	
+	else if(prescale_value<64)
+ 174:	20 34       	cpi	r18, 0x40	; 64
+ 176:	10 f4       	brcc	.+4      	; 0x17c <TWI_Master_Init+0x60>
+	{
+		*(TWI_addr + TWSR) = PRESCALE_64;
+ 178:	83 e0       	ldi	r24, 0x03	; 3
+ 17a:	89 83       	std	Y+1, r24	; 0x01
+	}
+	
+	//if prescale is higher return error value to then reenter?
+	//same for twbr
+	uint16_t TWBR_value = (((F_CPU/F_DIV)/(uint32_t)(I2C_freq))-16UL)/(2UL*prescale_value);
+ 17c:	da 01       	movw	r26, r20
+ 17e:	c9 01       	movw	r24, r18
+ 180:	99 27       	eor	r25, r25
+ 182:	aa 27       	eor	r26, r26
+ 184:	bb 27       	eor	r27, r27
+ 186:	9c 01       	movw	r18, r24
+ 188:	ad 01       	movw	r20, r26
+ 18a:	22 0f       	add	r18, r18
+ 18c:	33 1f       	adc	r19, r19
+ 18e:	44 1f       	adc	r20, r20
+ 190:	55 1f       	adc	r21, r21
+ 192:	c7 01       	movw	r24, r14
+ 194:	b6 01       	movw	r22, r12
+ 196:	0e 94 d9 00 	call	0x1b2	; 0x1b2 <__udivmodsi4>
+	
+	//since TWBR register is a 8-bit register thus max val is 255
+	if(TWBR_value<256)
+ 19a:	2f 3f       	cpi	r18, 0xFF	; 255
+ 19c:	31 05       	cpc	r19, r1
+ 19e:	09 f0       	breq	.+2      	; 0x1a2 <TWI_Master_Init+0x86>
+ 1a0:	08 f4       	brcc	.+2      	; 0x1a4 <TWI_Master_Init+0x88>
+	{
+		*(TWI_addr + TWBR) = ((uint8_t)TWBR_value);
+ 1a2:	28 83       	st	Y, r18
+	}
+}
+ 1a4:	df 91       	pop	r29
+ 1a6:	cf 91       	pop	r28
+ 1a8:	ff 90       	pop	r15
+ 1aa:	ef 90       	pop	r14
+ 1ac:	df 90       	pop	r13
+ 1ae:	cf 90       	pop	r12
+ 1b0:	08 95       	ret
+
+000001b2 <__udivmodsi4>:
+ 1b2:	a1 e2       	ldi	r26, 0x21	; 33
+ 1b4:	1a 2e       	mov	r1, r26
+ 1b6:	aa 1b       	sub	r26, r26
+ 1b8:	bb 1b       	sub	r27, r27
+ 1ba:	fd 01       	movw	r30, r26
+ 1bc:	0d c0       	rjmp	.+26     	; 0x1d8 <__udivmodsi4_ep>
+
+000001be <__udivmodsi4_loop>:
+ 1be:	aa 1f       	adc	r26, r26
+ 1c0:	bb 1f       	adc	r27, r27
+ 1c2:	ee 1f       	adc	r30, r30
+ 1c4:	ff 1f       	adc	r31, r31
+ 1c6:	a2 17       	cp	r26, r18
+ 1c8:	b3 07       	cpc	r27, r19
+ 1ca:	e4 07       	cpc	r30, r20
+ 1cc:	f5 07       	cpc	r31, r21
+ 1ce:	20 f0       	brcs	.+8      	; 0x1d8 <__udivmodsi4_ep>
+ 1d0:	a2 1b       	sub	r26, r18
+ 1d2:	b3 0b       	sbc	r27, r19
+ 1d4:	e4 0b       	sbc	r30, r20
+ 1d6:	f5 0b       	sbc	r31, r21
+
+000001d8 <__udivmodsi4_ep>:
+ 1d8:	66 1f       	adc	r22, r22
+ 1da:	77 1f       	adc	r23, r23
+ 1dc:	88 1f       	adc	r24, r24
+ 1de:	99 1f       	adc	r25, r25
+ 1e0:	1a 94       	dec	r1
+ 1e2:	69 f7       	brne	.-38     	; 0x1be <__udivmodsi4_loop>
+ 1e4:	60 95       	com	r22
+ 1e6:	70 95       	com	r23
+ 1e8:	80 95       	com	r24
+ 1ea:	90 95       	com	r25
+ 1ec:	9b 01       	movw	r18, r22
+ 1ee:	ac 01       	movw	r20, r24
+ 1f0:	bd 01       	movw	r22, r26
+ 1f2:	cf 01       	movw	r24, r30
+ 1f4:	08 95       	ret
+
+000001f6 <_exit>:
+ 1f6:	f8 94       	cli
+
+000001f8 <__stop_program>:
+ 1f8:	ff cf       	rjmp	.-2      	; 0x1f8 <__stop_program>

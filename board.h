@@ -201,4 +201,8 @@
 #define TWCR (4)
 #define TWAMR (5)
 
+/******* Error ********/
+#define no_errors (0)
+#define start_error (1)
+
 #endif /* BOARD_H_ */

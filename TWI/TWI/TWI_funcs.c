@@ -42,7 +42,7 @@ void handle_one_byte(uint8_t bytes_left, uint8_t volatile * TWI_addr)
 //set twi clock frequency,
 uint8_t TWI_Master_Init(uint8_t volatile *TWI_addr, uint32_t I2C_freq)
 {
-	uint8_t prescale_value = ((((F_CPU/F_DIV)/(uint32_t)(I2C_freq))-16UL)/(2UL*255));
+	uint8_t prescale_value = (((F_CPU/F_DIV)/(uint32_t)(I2C_freq))-16UL)/(2UL*255);
 	
 	// setting the status register
 	if(prescale_value<1)

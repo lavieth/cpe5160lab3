@@ -10,6 +10,8 @@ main.c
 
 print_memory.c
 
+STA013_funcs.c
+
 TWI_funcs.c
 
 UART.c

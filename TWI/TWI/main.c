@@ -12,8 +12,12 @@
 
 int main(void)
 {
+	uint8_t error_status;
     /* Replace with your application code */
-	TWI_Master_Init(&TWI0, TWI_FREQ);
+	error_status = TWI_Master_Init(&TWI0, TWI_FREQ);
+	if(error_status = no_errors)
+	{
+		//call debugging here
     
 	while (1) 
     {

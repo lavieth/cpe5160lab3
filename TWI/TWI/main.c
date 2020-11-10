@@ -15,7 +15,8 @@
 int main(void)
 {
 	uint8_t error_status;
-	
+	//initialize port c as output for UART
+	Output_Init(&PC, 0x80);
 	UART_Init(&UART0,9600);
 	//not sure what output to set it to
     /* Replace with your application code */

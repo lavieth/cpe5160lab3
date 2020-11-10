@@ -14,7 +14,8 @@ int main(void)
 {
     /* Replace with your application code */
 	TWI_Master_Init(&TWI0, TWI_FREQ);
-    while (1) 
+    
+	while (1) 
     {
     }
 }

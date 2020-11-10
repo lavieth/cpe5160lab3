@@ -202,3 +202,29 @@ uint8_t TWI_Master_Receive(uint8_t volatile *TWI_addr, uint8_t device_addr, uint
 	
 	return return_value;
 }
+
+uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uint32_t int_addr, uint8_t int_addr_sz, uint16_t num_bytes, uint8_t* array_name)
+{
+	uint8_t return_value=no_errors;
+	uint8_t send_value;
+	
+	send_value=device_addr<<1;
+	
+	send_start();
+	
+	//read status to see what we need to do next
+	uint8_t temp8=(*(TWI_addr+TWSR)&0xF8); //clear lower three bits
+	
+	//start sent
+	if(temp8=0x08)
+	{
+		
+	}
+	else if(0x10)
+	{
+		
+	}
+	else if(0x18)
+	
+	return return_value;
+}

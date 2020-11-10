@@ -7,6 +7,8 @@
 
 #include <avr/io.h>
 #include "TWI_funcs.h"
+#include "UART.h"
+#include "TWI_debug.h"
 #define TWI_FREQ (16000000)
 
 

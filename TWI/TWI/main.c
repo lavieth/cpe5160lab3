@@ -13,11 +13,13 @@
 int main(void)
 {
 	uint8_t error_status;
+	
+	UART_Init(&UART0,9600);
+	//not sure what output to set it to
     /* Replace with your application code */
 	error_status = TWI_Master_Init(&TWI0, TWI_FREQ);
 	if(error_status = no_errors)
-	{
-		//call debugging here
+		receive_debug();	
     
 	while (1) 
     {

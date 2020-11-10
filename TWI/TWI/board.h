@@ -208,5 +208,7 @@
 #define bad_receive (3)
 #define SLA_R_error (4)
 #define SLA_R_NACK (5)
+#define prescaler_size_error (6)
+
 
 #endif /* BOARD_H_ */

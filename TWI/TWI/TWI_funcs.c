@@ -41,7 +41,8 @@ void handle_one_byte(uint8_t bytes_left, uint8_t volatile * TWI_addr)
 
 //set twi clock frequency,
 uint8_t TWI_Master_Init(uint8_t volatile *TWI_addr, uint32_t I2C_freq)
-{
+{	
+	uint8_t return_val = no_errors;
 	uint8_t prescale_value = (((F_CPU/F_DIV)/(uint32_t)(I2C_freq))-16UL)/(2UL*255);
 	
 	// setting the status register
@@ -74,6 +75,7 @@ uint8_t TWI_Master_Init(uint8_t volatile *TWI_addr, uint32_t I2C_freq)
 	{
 		*(TWI_addr + TWBR) = ((uint8_t)TWBR_value);
 	}
+	return return_val;
 }
 
 uint8_t TWI_Master_Receive(uint8_t volatile *TWI_addr, uint8_t device_addr, uint32_t int_addr, uint8_t int_addr_sz, uint16_t num_bytes, uint8_t * array_name)

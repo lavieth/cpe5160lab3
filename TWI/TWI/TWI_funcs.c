@@ -216,15 +216,20 @@ uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uin
 	uint8_t temp8=(*(TWI_addr+TWSR)&0xF8); //clear lower three bits
 	
 	//start sent
-	if(temp8=0x08)
+	if(temp8==0x08)
 	{
+		*(TWI_addr+TWDR)=send_value;
+		*(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWEN));
 		
 	}
-	else if(0x10)
+	else
+	{
+		return_value = start_error;	
+	}
+	if(return_value == no_errors)
 	{
 		
-	}
-	else if(0x18)
+	}	
 	
 	return return_value;
 }

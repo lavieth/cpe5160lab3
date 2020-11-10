@@ -6,6 +6,21 @@
 #define PRESCALE_16 (2);
 #define PRESCALE_64 (3);
 
+void send_start(uint8_t volatile *TWI_addr)
+{
+	uint8_t status;
+	
+	//Send start bit
+	*(TWI_addr+TWCR )=( (1<<TWINT) | (1<<TWSTA) | (1<<TWEN));
+	
+	//wait for TWINT to be set
+	do
+	{
+		status = *(TWI_addr + TWCR);
+	} while ((status & (1<<TWINT)) == 0);
+		
+}
+
 //helper to handle sending stop bit
 void send_stop(uint8_t volatile * TWI_addr)
 {	
@@ -87,14 +102,16 @@ uint8_t TWI_Master_Receive(uint8_t volatile *TWI_addr, uint8_t device_addr, uint
 	uint8_t send_value=(device_addr<<1)|0x01; //set lsb to 1
 	uint8_t index=0;
 	
-	//Start bit, enable, and write 1 to TWINT to clear after command is written
+	/*//Start bit, enable, and write 1 to TWINT to clear after command is written
 	*(TWI_addr + TWCR) = ((1<<TWSTA)|(1<<TWEN)|(1<<TWINT));
 	
 	//wait until TWINT bit is set, indicating TWI is ready for next command
 	do
 	{
 		status=*(TWI_addr+TWCR);
-	}while(status & (1 << TWINT) == 0);
+	}while(status & (1 << TWINT) == 0);*/
+	
+	send_start();
 	
 	// clear bottom three bits
 	uint8_t temp8=(*(TWI_addr + TWSR) & 0xF8);

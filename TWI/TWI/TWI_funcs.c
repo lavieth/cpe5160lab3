@@ -207,6 +207,7 @@ uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uin
 {
 	uint8_t return_value=no_errors;
 	uint8_t send_value;
+	uint8_t status;
 	
 	send_value=device_addr<<1;
 	
@@ -226,9 +227,21 @@ uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uin
 	{
 		return_value = start_error;	
 	}
+	//if no errors send data bytes until all sent 
 	if(return_value == no_errors)
-	{
-		
+	{	
+		uint8_t index=0;
+		while((num_bytes!=0)&&(return_value==no_errors))
+		{
+			send_value=array_name[index];
+			index++;
+			num_bytes--;
+			//wait until TWINT is set to send again
+			do
+			{
+				status=*(TWI_addr+TWCR);
+			}while()
+		}
 	}	
 	
 	return return_value;

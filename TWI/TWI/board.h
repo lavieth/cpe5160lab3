@@ -207,8 +207,10 @@
 #define unknown_error (2)
 #define bad_receive (3)
 #define SLA_R_error (4)
-#define SLA_R_NACK (5)
-#define prescaler_size_error (6)
+#define SLA_W_error (5)
+#define SLA_R_NACK (6)
+#define SLA_W_NACK (7)
+#define prescaler_size_error (8)
 
 
 #endif /* BOARD_H_ */

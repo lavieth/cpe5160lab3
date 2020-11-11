@@ -7,10 +7,6 @@
 #include "UART_Print.h"
 
 //takes in TWI_Master_Receive() and checks that it is working
-void receive_debug();
-
-void transmit_debug();
-
-
+void transmit_receive_debug();
 
 #endif

@@ -22,10 +22,7 @@ int main(void)
     /* Replace with your application code */
 	error_status = TWI_Master_Init(&TWI0, TWI_FREQ);
 	if(error_status = no_errors)
-		//test receive first, then transmit & receive
-		//transmit_debug();
-		//receive_debug();	
-    
+		transmit_receive_debug();    
 	while (1) 
     {
     }

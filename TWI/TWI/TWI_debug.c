@@ -25,7 +25,7 @@ void transmit_receive_debug()
      index--;
   }while((error_status!=no_errors)&&(index!=0));
   
-  sprintf(prnt_buffer, "received value = %2.2bX\n\r", array_name[2]);
+  sprintf(prnt_buffer, "received value = %2.2X\n\r", array_name[2]);
   UART_Transmit_String(&UART1,0,prnt_buffer); 
 
 }

@@ -214,7 +214,8 @@ uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uin
 	send_start();
 	
 	//read status to see what we need to do next
-	uint8_t temp8=(*(TWI_addr+TWSR)&0xF8); //clear lower three bits
+	//clear lower three bits	
+	uint8_t temp8=(*(TWI_addr+TWSR)&0xF8);
 	
 	//start sent
 	if(temp8==0x08)
@@ -240,9 +241,73 @@ uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uin
 			do
 			{
 				status=*(TWI_addr+TWCR);
-			}while()
+			}while(status&0x80)==0)
+			//clear lower three bits	
+			temp8=(*(TWI_addr+TWSR)&0xF8);
+			//read status and see what to do next
+			//SLA+W sent, ack rec'd
+			if(temp8==0x18)
+			{
+				*(TWI_addr+TWDR)=send_value;
+				*(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWEN));
+			}
+			//data sent, ACK rec'd
+			else if(temp8==0x28)
+			{
+				*(TWI_addr+TWDR)=send_value;
+				*(TWI_addr+TWDR)=((1<<TWINT)|(1<<TWEN));
+			}
+			//sla+w sent, nack rec'd
+			else if(temp8==0x20)
+			{
+				/**(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWSTO)|(1<<TWEN));
+				//wait for stop condition to be cleared
+				do
+				{
+					status=*(TWI_addr+TWCR);
+				}while((status&(1<<TWSTO))!=0);*/
+				send_stop();
+				//send nack error
+				return_value=SLA_W_NACK; 
+				
+
+			}
+			//do we need the arbitration condition here as well?
+		
 		}
+		//after all bytes have been sent, send the stop condition
+		//state programming?
+		//sla+w w/ ack rec'd
+		if(temp8==0x18)
+		{
+			*(TWI_addr+TWDR)=send_val;
+			/**(TWI_addr+TWDR)=((1<<TWINT)|(1<<TWSTO)|(1<<TWEN));
+			//wait for the stop =0 
+			do
+			{
+				status=*(TWI_addr+TWCR);
+			}while((status&(1<<TWSTO))!=0);*/
+			send_stop();
+		}
+		//sla+w w/ nack rec'd
+		else if(temp8==0x20)
+		{
+			send_stop();
+		}
+		//byte send, ack rec'd
+		else if(temp8==0x28)
+		{
+			*(TWI_addr+TWDR)=send_value;
+			send_stop();
+			
+		}
+		//arbitration lost in sla+w
+		else if(temp8==0x38)
+		{
+			*(TWI_addr+TWDR)=((0<<TWSTA)|(0<<TWSTO)|(1<<TWINT));
+			return_value=STA_W_error;
+		}
+
 	}	
-	
 	return return_value;
 }

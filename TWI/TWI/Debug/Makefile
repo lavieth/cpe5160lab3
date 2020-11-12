@@ -41,6 +41,7 @@ C_SRCS +=  \
 ../Control_Outputs.c \
 ../main.c \
 ../print_memory.c \
+../TWI_debug.c \
 ../TWI_funcs.c \
 ../UART.c \
 ../UART_Print.c
@@ -57,6 +58,7 @@ Config_Arrays.o \
 Control_Outputs.o \
 main.o \
 print_memory.o \
+TWI_debug.o \
 TWI_funcs.o \
 UART.o \
 UART_Print.o
@@ -66,6 +68,7 @@ Config_Arrays.o \
 Control_Outputs.o \
 main.o \
 print_memory.o \
+TWI_debug.o \
 TWI_funcs.o \
 UART.o \
 UART_Print.o
@@ -75,6 +78,7 @@ Config_Arrays.d \
 Control_Outputs.d \
 main.d \
 print_memory.d \
+TWI_debug.d \
 TWI_funcs.d \
 UART.d \
 UART_Print.d
@@ -84,6 +88,7 @@ Config_Arrays.d \
 Control_Outputs.d \
 main.d \
 print_memory.d \
+TWI_debug.d \
 TWI_funcs.d \
 UART.d \
 UART_Print.d
@@ -124,6 +129,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./print_memory.o: .././print_memory.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega324pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega324pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./TWI_debug.o: .././TWI_debug.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega324pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega324pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

@@ -10,6 +10,8 @@ main.c
 
 print_memory.c
 
+TWI_debug.c
+
 TWI_funcs.c
 
 UART.c

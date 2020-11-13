@@ -44,7 +44,8 @@ C_SRCS +=  \
 ../TWI_debug.c \
 ../TWI_funcs.c \
 ../UART.c \
-../UART_Print.c
+../UART_Print.c \
+../Write_STA.c
 
 
 PREPROCESSING_SRCS += 
@@ -61,7 +62,8 @@ print_memory.o \
 TWI_debug.o \
 TWI_funcs.o \
 UART.o \
-UART_Print.o
+UART_Print.o \
+Write_STA.o
 
 OBJS_AS_ARGS +=  \
 Config_Arrays.o \
@@ -71,7 +73,8 @@ print_memory.o \
 TWI_debug.o \
 TWI_funcs.o \
 UART.o \
-UART_Print.o
+UART_Print.o \
+Write_STA.o
 
 C_DEPS +=  \
 Config_Arrays.d \
@@ -81,7 +84,8 @@ print_memory.d \
 TWI_debug.d \
 TWI_funcs.d \
 UART.d \
-UART_Print.d
+UART_Print.d \
+Write_STA.d
 
 C_DEPS_AS_ARGS +=  \
 Config_Arrays.d \
@@ -91,7 +95,8 @@ print_memory.d \
 TWI_debug.d \
 TWI_funcs.d \
 UART.d \
-UART_Print.d
+UART_Print.d \
+Write_STA.d
 
 OUTPUT_FILE_PATH +=TWI.elf
 
@@ -157,6 +162,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./UART_Print.o: .././UART_Print.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega324pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega324pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./Write_STA.o: .././Write_STA.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega324pb -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\Atmel\ATmega_DFP\1.3.300\gcc\dev\atmega324pb" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

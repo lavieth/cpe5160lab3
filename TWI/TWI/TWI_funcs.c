@@ -43,14 +43,13 @@ void handle_one_byte(uint8_t bytes_left, uint8_t volatile * TWI_addr)
 {
 	if(bytes_left == 1)
 	{
-		//Send NACK
+		//Data byte will be received and NACK returned
 		*(TWI_addr + TWCR)=((1<<TWINT)|(0<<TWEA)|(1<<TWEN));
-		send_stop(TWI_addr);
 	}
 	
 	else
 	{
-		//Send ACK
+		//DAta byte will be received and ACK returned
 		*(TWI_addr + TWCR)=((1<<TWINT)|(1<<TWEA)|(1<<TWEN));
 	}
 }
@@ -106,21 +105,130 @@ uint8_t TWI_Master_Init(uint8_t volatile *TWI_addr, uint32_t I2C_freq)
 	return return_value;
 }
 
+
+uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uint32_t int_addr, uint8_t int_addr_sz, uint16_t num_bytes, uint8_t * array_name)
+{
+	uint8_t return_value=no_errors;
+	uint8_t send_value;
+	uint8_t status;
+	uint8_t temp8;
+	
+	//Address + 0lsb, SLA+W
+	send_value=(device_addr<<1);
+	
+	send_start(TWI_addr);
+	
+	//read status to see what we need to do next
+	//clear lower three bits
+	temp8=(*(TWI_addr+TWSR)&0xF8);
+	
+	//start sent
+	if(temp8 == 0x08 || temp8 == 0x10)
+	{
+		*(TWI_addr+TWDR)=send_value;
+		*(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWEN));
+		
+		do
+		{
+			status=*(TWI_addr+TWCR);
+		}while((status & (1 << TWINT)) == 0);
+		
+		//Status register with bottom three bits cleared
+		temp8 = (*(TWI_addr + TWSR) & 0xF8);
+	}
+	
+	else
+	{
+		return_value = start_error;
+	}
+	//if no errors send data bytes until all sent
+	if(return_value == no_errors)
+	{
+		uint8_t index=0;
+		while(((num_bytes != 0) && (return_value == no_errors)) || (int_addr_sz!= 0))
+		{
+			send_value=array_name[index];
+			index++;
+			num_bytes--;
+			
+			//wait until TWINT is set to send again
+			do
+			{
+				status =* (TWI_addr + TWCR);
+			}while((status & (1<<TWINT)) == 0);
+			//clear lower three bits
+			temp8=(*(TWI_addr + TWSR) & 0xF8);
+			//read status and see what to do next
+			
+			//SLA+W sent and ACK received OR data sent and ACK received
+			if(temp8 == 0x18 || temp8 == 0x28)
+			{
+				if(int_addr_sz > 0)
+				{
+					//Shift 8 bytes if size 2 and no bytes if size 1
+					//Casting as uint8_t will select 8 rightmost bits
+					send_value = (uint8_t)(int_addr >> ((int_addr_sz - 1) * 8));
+					
+					//Increment num_bytes and decrement index because nothing was read from array this loop
+					num_bytes++;
+					index--;
+					int_addr_sz--;
+					
+				}
+				
+				*(TWI_addr+TWDR)=send_value;
+				*(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWEN));
+				
+				if((num_bytes == 0) && (int_addr_sz == 0))
+				{
+					send_stop(TWI_addr);
+				}
+				
+			}
+			
+			//SLA+W sent, NACK received
+			else if (temp8 == 0x20)
+			{
+				send_stop(TWI_addr);
+				return_value = SLA_W_NACK;
+			}
+			
+			//Data sent and NACK received
+			else if(temp8 == 0x30)
+			{
+				send_stop(TWI_addr);
+				return_value = data_sent_NACK;
+			}
+			
+			//Arbitration lost in SLA+W or data bytes
+			else if (temp8 == 0x38)
+			{
+				//release bus and enter slave mode
+				*(TWI_addr + TWCR) = (1<<TWINT);
+				return_value = transmit_arbitration;
+			}
+			
+		}
+	}
+	return return_value;
+}
+
 uint8_t TWI_Master_Receive(uint8_t volatile *TWI_addr, uint8_t device_addr, uint32_t int_addr, uint8_t int_addr_sz, uint16_t num_bytes, uint8_t * array_name)
 {
 	uint8_t return_value = no_errors;
 	uint8_t status;
 	uint8_t send_value=(device_addr<<1)|0x01; //set lsb to 1
-	uint8_t index=0;
-	
-	/*//Start bit, enable, and write 1 to TWINT to clear after command is written
-	*(TWI_addr + TWCR) = ((1<<TWSTA)|(1<<TWEN)|(1<<TWINT));
-	
-	//wait until TWINT bit is set, indicating TWI is ready for next command
-	do
+	uint8_t index = 0;
+	uint8_t * t_array;
+
+	uint8_t i = 10;
+	/*do
 	{
-		status=*(TWI_addr+TWCR);
-	}while(status & (1 << TWINT) == 0);*/
+		return_value=TWI_Master_Transmit(TWI_addr, device_addr, int_addr, int_addr_sz, 0,t_array);
+		i--;
+	}while((return_value!=no_errors)&&(i!=0));
+	 */
+	 
 	
 	send_start(TWI_addr);
 	
@@ -147,235 +255,54 @@ uint8_t TWI_Master_Receive(uint8_t volatile *TWI_addr, uint8_t device_addr, uint
 		return_value = start_error; 
 	}
 	
-	//Checking different statuses of SLA+R transmission
 	if(return_value == no_errors)
 	{
-		if(temp8==0x40) // SLA+R sent, ACK received
-		{
+		while((num_bytes > 0) && (return_value == no_errors))
+		{	
 			
-			//handle_one_byte(num_bytes, TWI_addr);
-			if(num_bytes == 1)
+			//SLA+R sent and ACK received
+			if(temp8 == 0x40)
 			{
-				//send NACK
-				*(TWI_addr + TWCR)=((1<<TWINT)|(0<<TWEA)|(1<<TWEN));
+				handle_one_byte(num_bytes, TWI_addr);
 			}
 			
-			else
+			//Data byte has been received and ACK has been returned
+			else if(temp8 == 0x50)
 			{
-				//send ACK
-				*(TWI_addr + TWCR)=((1<<TWINT)|(1<<TWEA)|(1<<TWEN));
+				array_name[index] = *(TWI_addr +TWDR);
+				
+				handle_one_byte(num_bytes, TWI_addr);
+				index++;
+				num_bytes--;
 			}
 			
-		
-			//while no errors and we have something to read
-			while((num_bytes != 0) && (return_value == no_errors))
+			//Data byte has been received and NACK has been returned
+			else if (temp8 == 0x58)
 			{
-				
-				//handle_one_byte(num_bytes, TWI_addr);
-				//num_bytes--;
-				
-				//wait for TWINT bit to be set, indicating new data
+				array_name[index] = *(TWI_addr +TWDR);
+				send_stop(TWI_addr);
+				index++;
+				num_bytes--;
+			}
+			
+			
+			
+			if(num_bytes > 0)
+			{
 				do
 				{
- 					status = *(TWI_addr+TWCR);
-				}while((status & (1<<TWINT)) == 0);
+					status=*(TWI_addr+TWCR);
+				}while((status & (1 << TWINT)) == 0);
 				
-				
-				
-				//clear lower 3 bits to read 
-				temp8 = ( *(TWI_addr + TWSR) & 0xF8);
-				
-				
-				
-				//Data byte received, ACK sent
-				if(temp8 == 0x50)
-				{
-					
-					array_name[index] = *(TWI_addr + TWDR);//write data received into array
-					index++;
-					handle_one_byte(num_bytes, TWI_addr);
-					
-					num_bytes--;
-					/*if(num_bytes == 1)
-					{
-						//Send NACK
-						*(TWI_addr + TWCR)=((1<<TWINT)|(0<<TWEA)|(1<<TWEN));
-						//send_stop(TWI_addr);
-					}
-					
-					else
-					{
-						//Send ACK
-						*(TWI_addr + TWCR)=((1<<TWINT)|(1<<TWEA)|(1<<TWEN));
-					}*/
-				}
-				
-				//Data byte received, NACK sent
-				else if(temp8 == 0x58) 
-				{
-					num_bytes--;
-					array_name[index] = *(TWI_addr + TWDR);//write data received into array
-					//*(TWI_addr+TWCR )=((1<<TWINT)|(1<<TWSTO)|(1<<TWEN));
-					
-					/*do 
-					{
-						status = *(TWI_addr + TWCR);
-					} while ((status & (1<<TWSTO)) != 0);*/
-					send_stop(TWI_addr);
-					return_value = no_errors;
-				}
-				
-				else
-				{
-					return_value = unknown_error;
-				}
+				//write to temp8
+				temp8 = (*(TWI_addr + TWSR) & 0xF8);
 			}
-		}
-		
-		 //Arbitration lost in SLA+R or NACK bit
-		else if(temp8 == 0x38)
-		{
-			//release serial bus and enter slave mode
-			*(TWI_addr + TWCR) = ((1<<TWINT) | (0<<TWSTA) | (0<<TWSTO));
-			return_value = SLA_R_error;
-		}
-		
-		//SLA+R transmitted and NACK received
-		else if(temp8 == 0x48)
-		{
-			//Stop condition transmitted and TWSTO flag reset
-			*(TWI_addr + TWCR) = ((1<<TWINT) | (0<<TWSTA) | (1<<TWSTO));
-			return_value = SLA_R_NACK;
-		}
-		
-		else
-		{
-			return_value = unknown_error;
-		}
+		} 
 	}
 	
 	return return_value;
 }
 
-uint8_t TWI_Master_Transmit(uint8_t volatile *TWI_addr, uint8_t device_addr, uint32_t int_addr, uint8_t int_addr_sz, uint16_t num_bytes, uint8_t* array_name)
-{
-	uint8_t return_value=no_errors;
-	uint8_t send_value;
-	uint8_t status;
-	uint8_t temp8;
-	
-	//Address + 0lsb, SLA+W
-	send_value=(device_addr<<1);
-	
-	send_start(TWI_addr);
-	
-	/*do
-	{
-		status=*(TWI_addr+TWCR);
-	}while((status & (1 << TWINT)) == 0);
-	//write to temp8
-	temp8=(*(TWI_addr + TWSR) & 0xF8);*/
-	
-	//read status to see what we need to do next
-	//clear lower three bits	
-	temp8=(*(TWI_addr+TWSR)&0xF8);
-	
-	//start sent
-	if(temp8 == 0x08 || temp8 == 0x10)
-	{
-		*(TWI_addr+TWDR)=send_value;
-		*(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWEN));
-		
-		do
-		{
-			status=*(TWI_addr+TWCR);
-		}while((status & (1 << TWINT)) == 0);
-		
-		//write to temp8
-		temp8=(*(TWI_addr + TWSR) & 0xF8);
-	}
-	
-	else
-	{
-		return_value = start_error;	
-	}
-	//if no errors send data bytes until all sent 
-	if(return_value == no_errors)
-	{	
-		uint8_t index=0;
-		while((num_bytes != 0) && (return_value == no_errors))
-		{
-			send_value=array_name[index];
-			index++;
-			num_bytes--;
-			//wait until TWINT is set to send again
-			do
-			{
-				status=*(TWI_addr+TWCR);
-			}while((status&0x80)==0);
-			//clear lower three bits	
-			temp8=(*(TWI_addr+TWSR)&0xF8);
-			//read status and see what to do next
-			//SLA+W sent, ack rec'd
-			if(temp8==0x18)
-			{
-				if(num_bytes != 0)
-				{
-					*(TWI_addr+TWDR)=send_value;
-					*(TWI_addr+TWCR)=((1<<TWINT)|(1<<TWEN));
-				}
-			}
-			
-			//data sent, ACK rec'd
-			else if(temp8==0x28)
-			{
-				if(num_bytes != 0)
-				{
-					*(TWI_addr+TWDR)=send_value;
-					*(TWI_addr+TWDR)=((1<<TWINT)|(1<<TWEN));
-				}
-			}
-			//sla+w sent, NACK rec'd
-			else if(temp8==0x20)
-			{
-			
-				send_stop(TWI_addr);
-				//send nack error
-				return_value=SLA_W_NACK; 
-				
 
-			}
-			//do we need the arbitration condition here as well?
-		
-		}
-		//after all bytes have been sent, send the stop condition
-		//state programming?
-		//sla+w w/ ack rec'd
-		/*if(temp8==0x18)
-		{
-			*(TWI_addr+TWDR)=send_value;
-			
-			send_stop(TWI_addr);
-		}
-		//sla+w w/ nack rec'd
-		else if(temp8==0x20)
-		{
-			send_stop(TWI_addr);
-		}
-		//byte send, ack rec'd
-		else if(temp8==0x28)
-		{
-			*(TWI_addr+TWDR)=send_value;
-			send_stop(TWI_addr);
-			
-		}
-		//arbitration lost in sla+w
-		else if(temp8==0x38)
-		{
-			*(TWI_addr+TWDR)=((0<<TWSTA)|(0<<TWSTO)|(1<<TWINT));
-			return_value=SLA_W_error;
-		}*/
-		send_stop(TWI_addr);
-	}	
-	return return_value;
-}
+
+

@@ -211,6 +211,8 @@
 #define SLA_R_NACK (6)
 #define SLA_W_NACK (7)
 #define prescaler_size_error (8)
+#define data_sent_NACK (9)
+#define transmit_arbitration (10)
 
 
 #endif /* BOARD_H_ */

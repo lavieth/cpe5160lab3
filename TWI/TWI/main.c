@@ -6,15 +6,19 @@
  */ 
 
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 #include "TWI_funcs.h"
 #include "UART.h"
 #include "TWI_debug.h"
 #include "Control_Outputs.h"
+#include "Write_STA.h"
 #define TWI_FREQ (25000)
 
 
 int main(void)
 {
+	extern const  uint8_t CONFIG[3998];
+	extern const  uint8_t CONFIG2[50];
 	uint8_t error_status;
 	//initialize port c as output for UART
 	Output_Init(&PC, 0x80);
@@ -27,8 +31,11 @@ int main(void)
 	{
 		transmit_receive_debug();
 	}
-	while (1) 
-    {
-    }
+	
+	write_STA();
+	
+	while (1); 
+    //{
+    //}
 }
 

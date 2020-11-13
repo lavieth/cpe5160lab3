@@ -6,6 +6,7 @@
  */ 
 #include "TWI_funcs.h"
 #include <avr/pgmspace.h>
+#include <stdio.h>
 void write_STA()
 {
 	extern const  uint8_t CONFIG[3998];
